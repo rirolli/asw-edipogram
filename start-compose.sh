@@ -6,4 +6,4 @@ gradle build
 echo Starting docker compose
 docker compose build
 docker compose push
-docker compose up
+docker compose up -d
