@@ -1,0 +1,6 @@
+FROM openjdk:18-jdk
+ARG JAR_FILE=build/libs/api-gateway.jar
+COPY ${JAR_FILE} api-gateway.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-Xmx128m", "-Xms128m","-jar","/api-gateway.jar"]
+HEALTHCHECK --start-period=30s --interval=10s CMD curl -f http://localhost:8080/actuator/health || exit 1

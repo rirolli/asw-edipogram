@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+  consul:
+    image: consul:latest
+    container_name: asw-consul
+    ports:
+      - "8500:8500"
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    container_name: asw-zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: docker.io/bitnami/kafka:3.2
+    container_name: asw-kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+
+  connessioni:
+    restart: on-failure
+    build: 
+      context: connessioni
+      dockerfile: dockerfile
+    container_name: asw-connessioni
+    depends_on:
+      - consul
+#      - "kafka"
+  enigmi:
+    restart: on-failure
+    build: 
+      context: enigmi
+      dockerfile: dockerfile
+    container_name: asw-enigmi
+    depends_on:
+      - consul
+#      - "kafka"
+  enigmi-seguiti:
+    restart: on-failure
+    build: 
+      context: enigmi-seguiti
+      dockerfile: dockerfile
+    container_name: asw-enigmi-seguiti
+    depends_on:
+      - consul
+#      - "kafka"
+  api-gateway:
+    restart: on-failure
+    build: 
+      context: api-gateway
+      dockerfile: dockerfile
+    container_name: asw-api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - consul
+#      - "kafka"
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local

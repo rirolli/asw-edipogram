@@ -3,3 +3,4 @@
 
 # ignora la cartella di gradle
 /.gradle
+*/bin/*
