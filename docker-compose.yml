@@ -7,29 +7,70 @@ services:
     container_name: asw-consul
     ports:
       - "8500:8500"
+#  zookeeper:
+#    restart: on-failure
+#    image: docker.io/bitnami/zookeeper:3.8
+#    container_name: asw-zookeeper
+#    ports:
+#      - "2181:2181"
+#    volumes:
+#      - "zookeeper_data:/bitnami"
+#    environment:
+#      - ALLOW_ANONYMOUS_LOGIN=yes
+#  kafka:
+#    restart: on-failure
+#    image: docker.io/bitnami/kafka:3.2
+#    container_name: asw-kafka
+#    ports:
+#      - "9092:9092"
+#    volumes:
+#      - "kafka_data:/bitnami"
+#    environment:
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#    depends_on:
+#      - zookeeper
   zookeeper:
-    restart: on-failure
-    image: docker.io/bitnami/zookeeper:3.8
-    container_name: asw-zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    container_name: asw-cp-zookeeper
     ports:
       - "2181:2181"
-    volumes:
-      - "zookeeper_data:/bitnami"
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
-    restart: on-failure
-    image: docker.io/bitnami/kafka:3.2
-    container_name: asw-kafka
-    ports:
-      - "9092:9092"
-    volumes:
-      - "kafka_data:/bitnami"
-    environment:
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
+    image: confluentinc/cp-kafka:6.1.1
+    container_name: asw-cp-kafka
     depends_on:
       - zookeeper
+    ports:
+      - '9092:9092'
+    expose:
+      - '29092'
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+      KAFKA_MIN_INSYNC_REPLICAS: '1'
+  init-kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: asw-cp-init-kafka
+    depends_on:
+      - kafka
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:29092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic enigma-topic --replication-factor 1 --partitions 4
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic connessioni-topic --replication-factor 1 --partitions 4
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
 
   connessioni:
     restart: on-failure
