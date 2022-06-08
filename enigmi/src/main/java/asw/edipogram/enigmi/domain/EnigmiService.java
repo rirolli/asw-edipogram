@@ -2,6 +2,10 @@ package asw.edipogram.enigmi.domain;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import asw.edipogram.common.api.event.DomainEvent;
+import asw.edipogram.enigmi.api.event.EnigmiCreatedEvent;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -15,9 +19,23 @@ public class EnigmiService {
 	@Autowired
 	private EnigmiRepository enigmiRepository;
 
+	@Autowired
+	private EnigmiDomainEventPublisher domainEventPublisher;
+
  	public Enigma createEnigma(String autore, String tipo, String tipoSpecifico, String titolo, String[] testo, String[] soluzione) {
 		Enigma enigma = new Enigma(autore, tipo, tipoSpecifico, titolo, testo, soluzione); 
 		enigma = enigmiRepository.save(enigma);
+
+		//kafka event
+		DomainEvent event = new EnigmiCreatedEvent(enigma.getId(),
+													enigma.getAutore(),
+													enigma.getTipo(),
+													enigma.getTipoSpecifico(),
+													enigma.getTitolo(),
+													enigma.getTesto(),
+													enigma.getSoluzione());
+		domainEventPublisher.publish(event);
+		
 		return enigma;
 	}
 
