@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # compila il progetto e crea i vari JDK
 echo Building project
 gradle build
