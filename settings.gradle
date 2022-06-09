@@ -2,5 +2,9 @@ include 'enigmi'
 include 'connessioni'
 include 'enigmi-seguiti'
 include 'api-gateway'
+include 'edipogram-common-api-event'
+include 'connessioni-api-event'
+include 'enigmi-api-event'
+
 
 rootProject.name = 'asw-edipogram'

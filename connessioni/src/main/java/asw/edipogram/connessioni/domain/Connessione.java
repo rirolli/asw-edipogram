@@ -13,7 +13,7 @@ public class Connessione {
 	private Long id; 
 	private String utente; 
 	private String tipo; 
-	
+
 	public Connessione(String utente, String tipo) {
 		this(); 
 		this.utente = utente; 

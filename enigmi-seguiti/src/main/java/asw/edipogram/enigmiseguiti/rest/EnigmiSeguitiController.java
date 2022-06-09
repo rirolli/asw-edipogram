@@ -31,7 +31,7 @@ public class EnigmiSeguitiController {
 	@GetMapping("/enigmiseguiti/{utente}")
 	public Collection<Enigma> getEnigmiSeguiti(@PathVariable String utente) {
 		Instant start = Instant.now();
-		logger.info("REST CALL: getEnigmiSeguiti " + utente); 
+		//logger.info("REST CALL: getEnigmiSeguiti " + utente);       non è piu una REST CALL
 		Collection<Enigma> enigmi = enigmiSeguitiService.getEnigmiSeguiti(utente); 
 		Duration duration = Duration.between(start, Instant.now()); 
 		logger.info("getEnigmiSeguiti " + utente + " (trovati " + enigmi.size() + " enigmi in " + duration.toMillis() + " ms): " + enigmi);
