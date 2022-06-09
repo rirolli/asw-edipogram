@@ -22,6 +22,8 @@ public class EnigmiService {
 	@Autowired
 	private EnigmiDomainEventPublisher domainEventPublisher;
 
+	private final Logger logger = Logger.getLogger(EnigmiService.class.toString()); 
+
  	public Enigma createEnigma(String autore, String tipo, String tipoSpecifico, String titolo, String[] testo, String[] soluzione) {
 		Enigma enigma = new Enigma(autore, tipo, tipoSpecifico, titolo, testo, soluzione); 
 		enigma = enigmiRepository.save(enigma);
@@ -34,6 +36,7 @@ public class EnigmiService {
 													enigma.getTitolo(),
 													enigma.getTesto(),
 													enigma.getSoluzione());
+		logger.info("EVENT PUBLISH: createEnigma: " + event);
 		domainEventPublisher.publish(event);
 		
 		return enigma;

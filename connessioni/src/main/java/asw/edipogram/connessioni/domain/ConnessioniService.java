@@ -21,6 +21,8 @@ public class ConnessioniService {
 	@Autowired
 	private ConnessioniDomainEventPublisher domainEventPublisher;
 
+	private final Logger logger = Logger.getLogger(ConnessioniService.class.toString()); 
+
  	public Connessione createConnessione(String utente, String tipo) {
 		Connessione connessione = new Connessione(utente, tipo); 
 		connessione = connessioniRepository.save(connessione);
@@ -29,8 +31,9 @@ public class ConnessioniService {
 		DomainEvent event = new ConnessioniCreatedEvent(connessione.getId(),
 														connessione.getUtente(),
 														connessione.getTipo());
+		logger.info("EVENT PUBLISH: createConnessione: " + event);
 		domainEventPublisher.publish(event);
-		
+
 		return connessione;
 	}
 

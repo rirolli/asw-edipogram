@@ -20,7 +20,7 @@ public class Enigma implements Comparable<Enigma> {
 	private String titolo; 
 	private String[] testo; 
 	private String[] soluzione; 
-	
+
 	public Enigma(String autore, String tipo, String tipoSpecifico, String titolo, String[] testo, String[] soluzione) {
 		this(); 
 		this.autore = autore; 
