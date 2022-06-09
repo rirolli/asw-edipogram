@@ -36,7 +36,9 @@ services:
     build: 
       context: connessioni
       dockerfile: dockerfile
-    container_name: asw-connessioni
+    deploy: 
+      mode: replicated
+      replicas: 2
     depends_on:
       - consul
       - kafka
@@ -45,7 +47,9 @@ services:
     build: 
       context: enigmi
       dockerfile: dockerfile
-    container_name: asw-enigmi
+    deploy: 
+      mode: replicated
+      replicas: 2
     depends_on:
       - consul
       - kafka
@@ -54,7 +58,9 @@ services:
     build: 
       context: enigmi-seguiti
       dockerfile: dockerfile
-    container_name: asw-enigmi-seguiti
+    deploy: 
+      mode: replicated
+      replicas: 2
     depends_on:
       - consul
       - kafka
