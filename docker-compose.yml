@@ -1,12 +1,52 @@
 version: "3.8"
 
 services:
+  postgres_enigmi:
+    restart: on-failure
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./enigmi_data:/var/lib/postgresql/data"
+    container_name : postgres_enigmi
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db_enigmi
+
+  postgres_connessioni:
+    restart: on-failure
+    image: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - "./connessioni_data:/var/lib/postgresql/data"
+    container_name : postgres_connessioni
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db_connessioni
+
+  postgres_enigmiSeguiti:
+    restart: on-failure
+    image: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - "./enigmiSeguiti_data:/var/lib/postgresql/data"
+    container_name : postgres_enigmiSeguiti
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db_enigmiSeguiti
+
   consul:
     restart: on-failure
     image: consul:latest
     container_name: asw-consul
     ports:
       - "8500:8500"
+      
   zookeeper:
     restart: on-failure
     image: docker.io/bitnami/zookeeper:3.8
@@ -17,6 +57,7 @@ services:
       - "zookeeper_data:/bitnami"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+      
   kafka:
     restart: on-failure
     image: docker.io/bitnami/kafka:3.2
@@ -40,6 +81,13 @@ services:
     depends_on:
       - consul
       - kafka
+      - postgres_connessioni
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_connessioni:5432/db_connessioni
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      
   enigmi:
     restart: on-failure
     build: 
@@ -49,6 +97,13 @@ services:
     depends_on:
       - consul
       - kafka
+      - postgres_enigmi
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_enigmi:5432/db_enigmi
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      
   enigmi-seguiti:
     restart: on-failure
     build: 
@@ -58,6 +113,13 @@ services:
     depends_on:
       - consul
       - kafka
+      - db_enigmiSeguiti
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_enigmiSeguiti:5432/db_enigmiSeguiti
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      
   api-gateway:
     restart: on-failure
     build: 
