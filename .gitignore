@@ -2,10 +2,10 @@
 *.log
 
 # ignora la cartella di gradle
-/.vscode
-/.gradle
+.vscode/
+.gradle/
 */bin/*
-/*_data
-/*.json
-/certs
-/build
+*_data/
+*.json/
+*/build/*
+certs/

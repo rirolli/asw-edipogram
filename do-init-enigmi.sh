@@ -3,11 +3,11 @@
 # inizializza il db degli enigmi 
 
 curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-Type: application/json" \
-     -d "{ \"autore\": \"Azimut\", \"tipo\": \"Indovinello\", \"tipoSpecifico\": \"Indovinello\", \"titolo\": \"Un'esecuzione ben riuscita\", \"testo\": [ \"Quell'andante in sol maggiore\", \"con scioltezza terminò!\" ], \"soluzione\": [ \"Icaro\" ] }"
+     -d "{ \"autore\": \"Azimut\", \"tipo\": \"Indovinello\", \"tipoSpecifico\": \"Indovinello\", \"titolo\": \"Un'esecuzione ben riuscita\", \"testo\": [ \"Quell'andante in sol maggiore\", \"con scioltezza termino'!\" ], \"soluzione\": [ \"Icaro\" ] }"
 echo 
 
 curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-Type: application/json" \
-     -d "{ \"autore\": \"Turandot\", \"tipo\": \"Indovinello\", \"tipoSpecifico\": \"Indovinello\", \"titolo\": \"Il Corriere della Sera\", \"testo\": [ \"È un noto quotidian di gran formato.\" ], \"soluzione\": [ \"Il pane\" ] }"
+     -d "{ \"autore\": \"Turandot\", \"tipo\": \"Indovinello\", \"tipoSpecifico\": \"Indovinello\", \"titolo\": \"Il Corriere della Sera\", \"testo\": [ \"E' un noto quotidian di gran formato.\" ], \"soluzione\": [ \"Il pane\" ] }"
 echo 
 
 curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-Type: application/json" \
@@ -19,7 +19,7 @@ curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-
 echo 
 
 curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-Type: application/json" \
-     -d "{ \"autore\": \"Radar\", \"tipo\": \"Cambio\", \"tipoSpecifico\": \"Cambio di consonante (7)\", \"titolo\": \"Turisti contro la crisi\", \"testo\": [ \"Han preso piede e poi, per certi versi,\", \"s'intonano davvero con quest'aria\", \"ché in effetti al momento del bisogno\", \"è la calata loro necessaria.\" ], \"soluzione\": [ \"caNzoni\", \"caLzoni\" ] }"
+     -d "{ \"autore\": \"Radar\", \"tipo\": \"Cambio\", \"tipoSpecifico\": \"Cambio di consonante (7)\", \"titolo\": \"Turisti contro la crisi\", \"testo\": [ \"Han preso piede e poi, per certi versi,\", \"s'intonano davvero con quest'aria\", \"che' in effetti al momento del bisogno\", \"e' la calata loro necessaria.\" ], \"soluzione\": [ \"caNzoni\", \"caLzoni\" ] }"
 echo 
 
 curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-Type: application/json" \
@@ -27,7 +27,7 @@ curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-
 echo 
 
 curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-Type: application/json" \
-     -d "{ \"autore\": \"Dendi\", \"tipo\": \"Cambio\", \"tipoSpecifico\": \"Cambio di finale\", \"titolo\": \"C'è molto traffico\", \"testo\": [ \"Raggiungerò Xxxx, ma non so xxxy.\" ], \"soluzione\": [ \"Como\", \"come\" ] }"
+     -d "{ \"autore\": \"Dendi\", \"tipo\": \"Cambio\", \"tipoSpecifico\": \"Cambio di finale\", \"titolo\": \"C'è molto traffico\", \"testo\": [ \"Raggiungero' Xxxx, ma non so xxxy.\" ], \"soluzione\": [ \"Como\", \"come\" ] }"
 echo 
 
 curl -X POST "http://localhost:8080/enigmi/enigmi" -H "accept: */*" -H "Content-Type: application/json" \
