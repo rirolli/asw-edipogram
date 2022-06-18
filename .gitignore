@@ -4,3 +4,4 @@
 # ignora la cartella di gradle
 /.gradle
 */bin/*
+/*_data

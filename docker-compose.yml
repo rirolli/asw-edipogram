@@ -1,8 +1,10 @@
 version: "3.8"
 
 services:
+
+# Databases postgres
   postgres_enigmi:
-    restart: on-failure
+    restart: always
     image: postgres
     ports:
       - "5432:5432"
@@ -15,7 +17,7 @@ services:
       - POSTGRES_DB=db_enigmi
 
   postgres_connessioni:
-    restart: on-failure
+    restart: always
     image: postgres
     ports:
       - "5433:5432"
@@ -28,7 +30,7 @@ services:
       - POSTGRES_DB=db_connessioni
 
   postgres_enigmiSeguiti:
-    restart: on-failure
+    restart: always
     image: postgres
     ports:
       - "5434:5432"
@@ -40,6 +42,19 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=db_enigmiSeguiti
 
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@admin.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5050:80"
+    volumes:
+     - "pgadmin-data:/var/lib/pgadmin"
+
+# Consul
   consul:
     restart: on-failure
     image: consul:latest
@@ -47,6 +62,7 @@ services:
     ports:
       - "8500:8500"
       
+# Kafka
   zookeeper:
     restart: on-failure
     image: docker.io/bitnami/zookeeper:3.8
@@ -72,6 +88,7 @@ services:
     depends_on:
       - zookeeper
 
+# Servizi
   connessioni:
     restart: on-failure
     build: 
@@ -132,8 +149,11 @@ services:
       - consul
       - kafka
 
+# Volumi
 volumes:
   zookeeper_data:
     driver: local
   kafka_data:
+    driver: local
+  pgadmin-data:
     driver: local
