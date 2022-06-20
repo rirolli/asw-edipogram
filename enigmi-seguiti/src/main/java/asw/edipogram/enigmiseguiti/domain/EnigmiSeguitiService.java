@@ -20,6 +20,9 @@ public class EnigmiSeguitiService {
 	@Autowired
 	private EnigmiSeguiti_EnigmaRepository enigmaRepository;
 
+	@Autowired
+	private EnigmiSeguiti_EnigmiSeguitiRepository enigmiSeguitiRepository;
+
 	private final Logger logger = Logger.getLogger(EnigmiSeguitiService.class.toString());
 
 
@@ -39,7 +42,20 @@ public class EnigmiSeguitiService {
 
 	private void connessioneCreated(ConnessioniCreatedEvent event) {
 		logger.info("CREATED CONNESSIONE: " + event.getTipo() + ':' + event.getUtente());
+
 		Connessione connessione = new Connessione(event.getId(), event.getUtente(), event.getTipo());
+
+		Collection<String> tipiSeguiti = new TreeSet<>();
+		tipiSeguiti.add(event.getTipo());
+		Collection<Enigma> enigmi = new TreeSet<>();
+		enigmi.addAll(enigmaRepository.findByTipoIn(tipiSeguiti));
+		//System.out.println("L'utente " + event.getUtente() + ", inizia a seguire il tipo " + event.getTipo() + ", che comprende gli enigmi: ");
+		for (Enigma e : enigmi){
+			//System.out.println(e.getAutore() + " - " + e.getAutore() + " - " + e.getTitolo());
+			EnigmiSeguiti enigmaSeguito = new EnigmiSeguiti(e.getId(), event.getUtente(), e.getAutore(), e.getTipo(), e.getTipoSpecifico(), e.getTitolo(), e.getTesto());
+			enigmaSeguito = enigmiSeguitiRepository.save(enigmaSeguito);
+		}
+
 		connessione = connessioniRepository.save(connessione);
 	}
 
