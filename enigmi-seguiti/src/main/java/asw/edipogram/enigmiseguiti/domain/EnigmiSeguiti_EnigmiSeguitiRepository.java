@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface EnigmiSeguiti_EnigmiSeguitiRepository extends CrudRepository<EnigmiSeguiti, EnigmiSeguitiId>{
 
+    public Collection<EnigmiSeguiti> findByUtente(String utente);
+
 }
