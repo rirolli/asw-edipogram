@@ -71,6 +71,7 @@ public class EnigmiSeguitiService {
 	}
 
 	public Collection<EnigmiSeguiti> getEnigmiSeguiti (String utente){
-		return enigmiSeguitiRepository.findByUtente(utente);
+		Collection<EnigmiSeguiti> enigmiSeguiti = enigmiSeguitiRepository.findByUtente(utente);
+		return enigmiSeguiti;
 	}
 }
