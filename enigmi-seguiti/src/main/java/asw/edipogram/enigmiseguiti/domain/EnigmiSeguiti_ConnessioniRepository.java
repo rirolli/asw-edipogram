@@ -10,4 +10,6 @@ public interface EnigmiSeguiti_ConnessioniRepository extends CrudRepository<Conn
 
     public Collection<Connessione> findByUtente(String utente);
 
+    public Collection<Connessione> findByTipoIn(Collection<String> tipi);
+
 }
